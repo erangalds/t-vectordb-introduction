@@ -9,10 +9,10 @@ services:
     volumes:
       - ./source-code:/source-code
       - ./data:/sample-data
-    ports:
-      - "11434:11434"
     tty: true
     stdin_open: true
+    extra_hosts: 
+      - "host.docker.internal:host-gateway"
 
   postgres:
     image: postgres:17
@@ -60,6 +60,12 @@ services:
 
 networks:
   vector-db-lab:
+    driver: bridge
+    name: vector-db-lab # Explicitly set the network name
+    ipam: 
+      config:
+        - subnet: 172.21.0.0/16
+          gateway: 172.21.0.1
 
 volumes:
   vectordb-postgres-db:

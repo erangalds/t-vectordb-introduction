@@ -2,7 +2,7 @@ import pandas as pd
 import psycopg
 
 # Read Excel file
-excel_file = 'mylibrary.xlsx'
+excel_file = '/sample-data/mylibrary/mylibrary.xlsx'
 sheet_name = 'Sheet1'
 df = pd.read_excel(excel_file, sheet_name=sheet_name)
 
@@ -11,10 +11,10 @@ df['Tags'] = df['Tags'].apply(lambda x: x.split(','))
 
 # Database connection parameters
 dbname = 'mylibrary'
-user = 'your_username'
-password = 'your_password'
-host = 'your_host'
-port = 'your_port'
+user = 'postgres'
+password = 'postgres'
+host = 'vectordb-lab-postgres-db'
+port = '5432'
 
 # Connect to PostgreSQL database
 conn_str = f'host={host} port={port} dbname={dbname} user={user} password={password}'
