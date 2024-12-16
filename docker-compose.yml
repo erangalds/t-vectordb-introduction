@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  python:
+    image: python:3.12
+    container_name: vectordb-lab-dev-coding
+    networks:
+      - vector-db-lab
+    volumes:
+      - ./source-code:/source-code
+      - ./data:/sample-data
+    ports:
+      - "11434:11434"
+    tty: true
+    stdin_open: true
+
+  postgres:
+    image: postgres:17
+    container_name: vectordb-lab-postgres-db
+    networks:
+      - vector-db-lab
+    volumes:
+      - vectordb-postgres-db:/var/lib/postgresql/data
+      - ./data:/sample-data
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: imdb
+    ports:
+      - "5432:5432"
+
+  elasticsearch:
+    image: elasticsearch:8.16.1
+    container_name: vectordb-lab-elastic
+    networks:
+      - vector-db-lab
+    environment:
+      discovery.type: single-node
+    volumes:
+      - vectordb-elastic-db:/usr/share/elasticsearch/data
+      - ./data:/sample-data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: vectordb-lab-chroma-db
+    networks:
+      - vector-db-lab
+    environment:
+      IS_PERSISTENT: 'TRUE'
+      PERSIST_DIRECTORY: /chroma/chroma
+    volumes:
+      - vectordb-chroma-db:/chroma/chroma
+      - ./data:/sample-data
+    ports:
+      - "8000:8000"
+
+networks:
+  vector-db-lab:
+
+volumes:
+  vectordb-postgres-db:
+  vectordb-elastic-db:
+  vectordb-chroma-db:
