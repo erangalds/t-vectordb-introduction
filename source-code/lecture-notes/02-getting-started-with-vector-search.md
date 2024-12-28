@@ -13,7 +13,7 @@
 
 ## The ***Relevancy Model***
 
-### *TF-IDF Term Frequency-Inverse Document Frequency Algorithm *
+### TF-IDF Term Frequency-Inverse Document Frequency Algorithm 
 Let's take an example: 
 + Document 1: "I love vector search. Vector search is amazing."
 + Document 2: "Vector search is a method for searching high-dimensional data."
@@ -66,7 +66,7 @@ The TF has no upper bound, which means that as the frequency of a term increases
 ### *BM25*
 The *BM25*, can increase the fidelity to data and refine the *TF-IDF* components of the equation. The *BM25* algorithm introduces a saturation component to the equation. This prevents extremely high term frequencies from dominating the *relevance score*. 
 
-![[lecture-notes-images/bm25-and-tf-idf.png]]
+![[./lecture-notes-images/bm25-and-tf-idf.png]]
 
 Calculating the *Relevance Score* using the *BM25* algorithm for the term *search*.  
 
