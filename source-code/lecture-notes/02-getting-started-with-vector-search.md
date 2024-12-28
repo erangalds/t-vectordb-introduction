@@ -76,7 +76,7 @@ Calculating the *Relevance Score* using the *BM25* algorithm for the term *searc
 
 Below is the equation to calculate the *BM25 Relevance Score*
 
-![[lecture-notes-images/bm25-idf-equation.png]]
+![lecture-notes-images/bm25-idf-equation.png](lecture-notes-images/bm25-idf-equation.png)
 
 Calculating the TF for each document. 
 
@@ -86,7 +86,7 @@ Calculating the TF for each document.
 
 Now IDF 
 
-![[lecture-notes-images/bm25-idf.png]]
+![lecture-notes-images/bm25-idf.png](lecture-notes-images/bm25-idf.png)
 
 ## The limits of *keyword-based* search
 *Keyword* based search relies on exact matches between the user *query* and the *terms* contained in the *documents.* This approach could lead to missed relevant results if the search system is not refined enough with *synonyms, abbreviations, alternative phrasing, etc.* Since the *keyword* based searches lack context understanding, they don't take *context or meaning* of words into consideration when doing the search. Furthermore, *keyword* based search does not capture the structure or semantics of sentences. The order of the words can be very important to understand the meaning of the *query*. 
@@ -121,14 +121,14 @@ When the data is converted into their vector representations, then we can use ce
 #### Distance Metrics
 #### Euclidean Distance
 
-![[lecture-notes-images/euclidean-distance.png]]
+![lecture-notes-images/euclidean-distance.png](lecture-notes-images/euclidean-distance.png)
 
 #### Dot Product
-![[lecture-notes-images/dot-product.png]]
+![lecture-notes-images/dot-product.png](lecture-notes-images/dot-product.png)
 
 #### Cosine Similarity
 
-![[lecture-notes-images/cosine-similarity.png]]
+![lecture-notes-images/cosine-similarity.png](lecture-notes-images/cosine-similarity.png)
 
 When you have three options, the question which comes to our mind is when to use which. The answer depends on the use case, the text that has been vectorized, the domain and the vector shape. 
 
@@ -161,7 +161,7 @@ Elasticsearch started to support a new data type named *dense_vector*. Main purp
 
 For example, consider a vocabulary of 100,000 words and a document containing 100 words. If we represent the document using dense vectors, we need to allocate memory for all 100,000 words, even though most of them would be zeros. In contrast, representing the same document with sparse vectors would only require memory for the 100 non-zero values, significantly reducing memory usage. This is because a dense vector representation assigns a non-zero value to every possible word in the vocabulary.
 
-![[lecture-notes-images/dense-sparse-embeddings.png]]
+![lecture-notes-images/dense-sparse-embeddings.png](lecture-notes-images/dense-sparse-embeddings.png)
 
 
 The scatter plot displays 2D embeddings of document vectors after dimensionality reduction. Dense vectors (on the right) are spread out, indicating diverse content, while sparse vectors (on the left) are closely clustered, suggesting similar content. These differences highlight the distinct characteristics of dense and sparse representations in the reduced space.
