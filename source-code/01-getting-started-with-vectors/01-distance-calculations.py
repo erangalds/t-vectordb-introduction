@@ -22,10 +22,10 @@ vector_e = nlp(text_e).vector
 
 # Displaying the Text and Their Vector Representations
 print(f"Text : {text_a}\nVector Length: {len(vector_a)} \nVector[0-25]: {vector_a[:25]}\n")
-print(f"Text : {text_a}\nVector Length: {len(vector_b)} \nVector[0-25]: {vector_b[:25]}\n")
-print(f"Text : {text_a}\nVector Length: {len(vector_c)} \nVector[0-25]: {vector_c[:25]}\n")
-print(f"Text : {text_a}\nVector Length: {len(vector_d)} \nVector[0-25]: {vector_d[:25]}\n")
-print(f"Text : {text_a}\nVector Length: {len(vector_e)} \nVector[0-25]: {vector_e[:25]}\n")
+print(f"Text : {text_b}\nVector Length: {len(vector_b)} \nVector[0-25]: {vector_b[:25]}\n")
+print(f"Text : {text_c}\nVector Length: {len(vector_c)} \nVector[0-25]: {vector_c[:25]}\n")
+print(f"Text : {text_d}\nVector Length: {len(vector_d)} \nVector[0-25]: {vector_d[:25]}\n")
+print(f"Text : {text_e}\nVector Length: {len(vector_e)} \nVector[0-25]: {vector_e[:25]}\n")
 
 # Calculate the cosine similarity between the vectors
 # The reason we calculate 1 - cosine() to get the cosine similarity is because the cosine() function from the scipy.
