@@ -13,6 +13,10 @@ services:
     stdin_open: true
     extra_hosts: 
       - "host.docker.internal:host-gateway"
+    ports:
+      - "8501:8501"
+    command: >
+      bash -c "python -m pip install --upgrade pip && python -m pip install -r /source-code/requirements.txt"
 
   postgres:
     image: postgres:17
