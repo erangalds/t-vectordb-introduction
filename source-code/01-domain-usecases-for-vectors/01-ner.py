@@ -40,4 +40,5 @@ def extract_entities(email, ner_model):
 # Extract entities from emails
 for email in emails:
     extracted_info = extract_entities(email, ner)
-    print(extracted_info)
+    print(f'Email Content:\n{email}\n')
+    print(f'Extracted Content:\n{extracted_info}\n')
