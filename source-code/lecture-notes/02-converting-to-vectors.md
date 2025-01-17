@@ -1,53 +1,53 @@
-# Vectors
-Vector embeddings play a crucial role in AI applications like retrieval-augmented generation (RAG), agents, natural language processing (NLP), semantic search, and image search. If you've ever used services like ChatGPT, language translators, or voice assistants, you've likely encountered systems that utilize embeddings.
+# Vectors Embeddings
+*Vector embeddings* play a crucial role in AI applications like *retrieval-augmented generation (RAG), agents, natural language processing (NLP), semantic search, and image search*. If you've ever used services like ChatGPT, language translators, or voice assistants, you've likely encountered systems that utilize embeddings.
 
-An embedding is a compact representation of raw data, such as images or text, converted into vectors composed of floating-point numbers. This method effectively captures the underlying meaning of the data. By mapping high-dimensional data into a lower-dimensional space (similar to a form of “lossy compression”), embeddings preserve essential structural or semantic relationships within the data. This process not only reduces the computational load of handling large datasets but also reveals patterns and relationships that might not be obvious in the original data.
+An *embedding* is a compact representation of raw data, such as images or text, converted into vectors composed of floating-point numbers. This method effectively captures the underlying meaning of the data. By mapping high-dimensional data into a lower-dimensional space (similar to a form of “lossy compression”), embeddings preserve essential structural or semantic relationships within the data. This process not only reduces the computational load of handling large datasets but also reveals patterns and relationships that might not be obvious in the original data.
 
-Embedding models position semantically similar items close together in the vector space. This means that items with greater similarity are placed nearer to each other. This property enables computers to search for, recommend, and cluster similar items with enhanced accuracy and efficiency.
+*Embedding models* position semantically similar items close together in the vector space. This means that items with greater similarity are placed nearer to each other. This property enables computers to search for, recommend, and cluster similar items with enhanced accuracy and efficiency.
 
 ## Are *vectors* and *embeddings* the same?
 Although the terms are often used interchangeably to describe numerical data representations where data points are represented as vectors in high-dimensional space, they are not quite the same. Vectors are simply arrays of numbers, with each number corresponding to a specific dimension or feature. In contrast, embeddings utilize vectors to represent data in a structured and meaningful way within continuous space.
 
 While embeddings can indeed be represented as vectors, not all vectors qualify as embeddings. Embeddings generate vectors, but vectors can also be produced through other methods.
 
-Types of Vector Embeddings
+## Types of Vector Embeddings
 There are various kinds of vector embeddings, each designed to represent different types of data:
 
-Word Embeddings: These are the most common embeddings in NLP, capturing semantic relationships between words such as antonyms and synonyms, as well as their contextual usage. They are used in tasks like language translation, word similarity, synonym generation, and sentiment analysis. They also enhance the relevance of search results by understanding the meaning of queries.
+**Word Embeddings**: These are the most common embeddings in NLP, capturing semantic relationships between words such as antonyms and synonyms, as well as their contextual usage. They are used in tasks like language translation, word similarity, synonym generation, and sentiment analysis. They also enhance the relevance of search results by understanding the meaning of queries.
 
-Sentence Embeddings: These represent the semantic meaning and context of sentences. They are useful for information retrieval, text categorization, and sentiment analysis. Sentence embeddings help chatbots understand and respond to user inputs more effectively, and they ensure that machine translation services retain the context and meaning of the original sentences.
+**Sentence Embeddings**: These represent the semantic meaning and context of sentences. They are useful for information retrieval, text categorization, and sentiment analysis. Sentence embeddings help chatbots understand and respond to user inputs more effectively, and they ensure that machine translation services retain the context and meaning of the original sentences.
 
-Document Embeddings: Similar to sentence embeddings, these represent the content and general meaning of entire documents, such as reports or articles. They are employed in recommendation systems, information retrieval, clustering, and document similarity and classification.
+**Document Embeddings**: Similar to sentence embeddings, these represent the content and general meaning of entire documents, such as reports or articles. They are employed in recommendation systems, information retrieval, clustering, and document similarity and classification.
 
-Graph Embeddings: These represent edges and nodes of graphs within a vector space. They are used for tasks like node classification, community detection, and link prediction.
+**Graph Embeddings**: These represent edges and nodes of graphs within a vector space. They are used for tasks like node classification, community detection, and link prediction.
 
-Image Embeddings: These capture different aspects of visual items, from individual pixels to entire images. They are used in content-based recommendation systems, image and object recognition, and image search systems by classifying image features.
+**Image Embeddings**: These capture different aspects of visual items, from individual pixels to entire images. They are used in content-based recommendation systems, image and object recognition, and image search systems by classifying image features.
 
-Product Embeddings: These range from embeddings for digital products like songs and movies to physical products like shampoos and phones. They are valuable for product recommendation based on semantic similarity, classification systems, and product searches.
+**Product Embeddings**: These range from embeddings for digital products like songs and movies to physical products like shampoos and phones. They are valuable for product recommendation based on semantic similarity, classification systems, and product searches.
 
-Audio Embeddings: These represent various features of audio signals, such as rhythm, tone, and pitch, in a vector format. They are used for applications like emotion detection, voice recognition, and music recommendations based on the user’s listening history. They are also essential for developing smart assistants that understand voice commands.
+**Audio Embeddings**: These represent various features of audio signals, such as rhythm, tone, and pitch, in a vector format. They are used for applications like emotion detection, voice recognition, and music recommendations based on the user’s listening history. They are also essential for developing smart assistants that understand voice commands.
 
-What Types of Objects Can Be Embedded?
+## What Types of Objects Can Be Embedded?
 Various data types and objects can be represented as vector embeddings. Here are some common examples:
 
-Text: Embeddings can be created for documents, paragraphs, sentences, and words using techniques like Word2Vec (for word embeddings) and Doc2Vec (for document embeddings).
+**Text**: Embeddings can be created for documents, paragraphs, sentences, and words using techniques like Word2Vec (for word embeddings) and Doc2Vec (for document embeddings).
 
-Images: Images are converted into vectors using methods like Convolutional Neural Networks (CNNs) or pre-trained models like ResNet and VGG. These embeddings are widely used in e-commerce applications.
+**Images**: Images are converted into vectors using methods like Convolutional Neural Networks (CNNs) or pre-trained models like ResNet and VGG. These embeddings are widely used in e-commerce applications.
 
-Audio: Audio signals, such as music or speech, can be embedded into numerical representations using techniques like Recurrent Neural Networks (RNNs) or spectrogram embeddings. This captures auditory properties, making audio interpretation more effective. Common applications include OpenAI Whisper and Google Speech-to-Text.
+**Audio**: Audio signals, such as music or speech, can be embedded into numerical representations using techniques like Recurrent Neural Networks (RNNs) or spectrogram embeddings. This captures auditory properties, making audio interpretation more effective. Common applications include OpenAI Whisper and Google Speech-to-Text.
 
-Graphs: Nodes and edges in a graph can be embedded using techniques like graph convolutional networks and node embeddings. This captures relational and structural information, where nodes represent entities (e.g., person, product, or web page) and edges represent connections or links between them.
+**Graphs**: Nodes and edges in a graph can be embedded using techniques like graph convolutional networks and node embeddings. This captures relational and structural information, where nodes represent entities (e.g., person, product, or web page) and edges represent connections or links between them.
 
-3D Models and Time-Series Data: These embeddings capture temporal patterns in sequential data, useful for sensor data, financial data, and IoT applications. They are employed for pattern identification, anomaly detection, and time-series forecasting. Additionally, 3D model embeddings represent geometric aspects of 3-dimensional objects, used for tasks like form matching, object detection, and 3D reconstruction.
+**3D Models and Time-Series Data**: These embeddings capture temporal patterns in sequential data, useful for sensor data, financial data, and IoT applications. They are employed for pattern identification, anomaly detection, and time-series forecasting. Additionally, 3D model embeddings represent geometric aspects of 3-dimensional objects, used for tasks like form matching, object detection, and 3D reconstruction.
 
-Molecules: Molecule embeddings represent chemical compounds and are used for molecular property prediction, drug discovery and development, and chemical similarity searching.
+**Molecules**: Molecule embeddings represent chemical compounds and are used for molecular property prediction, drug discovery and development, and chemical similarity searching.
 
-How Do Neural Networks Create Embeddings?
-Neural networks, including large language models such as GPT-4, Llama-2, and Mistral-7B, generate embeddings through a process known as representation learning. In this process, the network learns to map high-dimensional data into lower-dimensional spaces while preserving the critical properties of the data. They take raw input data, such as images and text, and convert them into numerical vectors.
+## How Do Neural Networks Create Embeddings?
+Neural networks, including large language models, generate embeddings through a process known as *representation learning*. In this process, the network learns to map *high-dimensional* data into *lower-dimensional* spaces while preserving the critical properties of the data. They take raw input data, such as images and text, and convert them into numerical vectors.
 
-During training, the neural network learns to transform these representations into meaningful embeddings. This is typically accomplished through layers of neurons—such as recurrent layers and convolutional layers—that adjust their weights and biases based on the training data.
+During training, the neural network learns to transform these representations into meaningful embeddings. This is typically accomplished through layers of neurons—such as *recurrent layers and convolutional layers*—that adjust their weights and biases based on the training data.
 
-Neural networks often incorporate embedding layers within their architecture. These layers receive processed data from preceding layers and consist of a set number of neurons that define the dimensionality of the embedding space. Initially, the weights in the embedding layer are randomly initialized and updated through techniques like backpropagation. These weights serve as the embeddings themselves, evolving during training to encode meaningful relationships between input data points. As the network continues to learn, these embeddings become increasingly refined representations of data.
+Neural networks often incorporate *embedding layers* within their architecture. These layers receive processed data from preceding layers and consist of a set number of neurons that define the dimensionality of the embedding space. Initially, the *weights* in the *embedding layer* are randomly initialized and updated through techniques like *backpropagation*. These *weights* serve as the embeddings themselves, evolving during training to encode meaningful relationships between input data points. As the network continues to learn, these *embeddings* become increasingly refined representations of data.
 
 Through iterative training, the neural network adjusts its parameters, including the weights in the embedding layer, to better represent the meaning of specific inputs and their relationships to other inputs (e.g., how one word relates to another). Backpropagation is used to adjust these weights and other parameters depending on the overall task, such as image classification, language translation, or another objective.
 
