@@ -15,6 +15,6 @@ CREATE TABLE IF NOT EXISTS dev.books (
     Edition VARCHAR,
     PublishedYear INTEGER,
     Publisher VARCHAR,
-    Authors VARCHAR,
+    Authors VARCHAR[],
     Tags VARCHAR[]
 );

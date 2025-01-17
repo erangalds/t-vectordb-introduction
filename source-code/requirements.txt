@@ -17,6 +17,7 @@ confection==0.1.5
 cymem==2.0.10
 decorator==5.1.1
 en_core_web_md @ https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.8.0/en_core_web_md-3.8.0-py3-none-any.whl#sha256=5e6329fe3fecedb1d1a02c3ea2172ee0fede6cea6e4aefb6a02d832dba78a310
+et_xmlfile==2.0.0
 filelock==3.16.1
 fsspec==2024.12.0
 gitdb==4.0.12
@@ -59,6 +60,7 @@ nvidia-nccl-cu12==2.21.5
 nvidia-nvjitlink-cu12==12.4.127
 nvidia-nvtx-cu12==12.4.127
 ollama==0.4.5
+openpyxl==3.1.5
 packaging==24.2
 pandas==2.2.3
 pillow==11.1.0
