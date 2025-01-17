@@ -91,32 +91,6 @@ Now IDF
 ## The limits of *keyword-based* search
 *Keyword* based search relies on exact matches between the user *query* and the *terms* contained in the *documents.* This approach could lead to missed relevant results if the search system is not refined enough with *synonyms, abbreviations, alternative phrasing, etc.* Since the *keyword* based searches lack context understanding, they don't take *context or meaning* of words into consideration when doing the search. Furthermore, *keyword* based search does not capture the structure or semantics of sentences. The order of the words can be very important to understand the meaning of the *query*. 
 
-## Vector Representation
-### Vectorization Process
-
-#### Step 1 - 
-Raw data is cleaned and preprocessed to remove noise, correct spellings errors and convert the text to a standardized format. Common processing steps are. 
-+ lowercasing
-+ tokenization
-+ stopword removal
-+ stemming
-+ lemmatization
-
-### Step 2
-After preprocessing the data, the relevant features are extracted from the text. The techniques used for this. 
-+ Bag-of-Words (BoW)  - generates a Sparce Vector
-+ TF-IDF - generates a Sparce Vector
-+ Word Embeddings - generates a Dense Vector
-
-***Dense Vectors*** contain non-zero values in most dimensions where as the ***Sparse Vectors*** contain  most values as *zeros*. Therefore, *word-embeddings* store more information in a smaller space. That makes them more efficient in computation. 
-
-*Word Embeddings* map words to points in a continuous multidimensional space. Which means the position of the word in the space is determined by a continuous set of numerical values. 
-
-### Step 3
-The extracted features gets converted into a numerical vector. 
-
-When the data is converted into their vector representations, then we can use certain algorithms (example : HNSW) to perform nearest neighbor searches in high dimensional spaces. 
-
 ### How can we calculate the similarity of two vectors
 #### Distance Metrics
 #### Euclidean Distance
@@ -155,18 +129,49 @@ When comparing texts in high-dimensional space, the direction is often more impo
 
 ## ***vector*** Data type and ***vector search query*** API
 ### ***sparce vector*** and ***dense vectors***
-Elasticsearch started to support a new data type named *dense_vector*. Main purpose of that data type is to store arrays of *numeric* values. Therefore, these arrays supports to store the *vector representation* of text semantic. 
 
-*Sparce vectors* are *vectors* that have few *non-zero* values, with most of the dimensions having zero values. This results in a *low-dimensional vector space*, which is more memory efficient and faster to process than dense vectors. 
+Dense Vectors
+Dense Vectors are vectors in which most of the elements are non-zero. They provide a compact representation of data and are often used in deep learning and other machine learning algorithms.
 
-For example, consider a vocabulary of 100,000 words and a document containing 100 words. If we represent the document using dense vectors, we need to allocate memory for all 100,000 words, even though most of them would be zeros. In contrast, representing the same document with sparse vectors would only require memory for the 100 non-zero values, significantly reducing memory usage. This is because a dense vector representation assigns a non-zero value to every possible word in the vocabulary.
+Examples:
+Word Embeddings: Techniques like Word2Vec, GloVe, and FastText generate dense vectors to represent words. For example, the word "apple" might be represented by a dense vector [0.52, 0.12, -0.75, 0.33, ...].
 
-![lecture-notes-images/dense-sparse-embeddings.png](lecture-notes-images/dense-sparse-embeddings.png)
+Image Embeddings: Convolutional Neural Networks (CNNs) produce dense vectors to represent features of images. Each dense vector contains values that encapsulate the visual features of the image.
 
+Use Cases:
+Natural Language Processing (NLP): Dense vectors are used to capture semantic relationships between words, sentences, or documents. This includes tasks like text classification, sentiment analysis, and machine translation.
 
-The scatter plot displays 2D embeddings of document vectors after dimensionality reduction. Dense vectors (on the right) are spread out, indicating diverse content, while sparse vectors (on the left) are closely clustered, suggesting similar content. These differences highlight the distinct characteristics of dense and sparse representations in the reduced space.
+Image Recognition: In image classification and object detection, dense vectors are used to represent the features of images, enabling the model to recognize and classify objects within the image.
 
-Sparse vectors are more memory-efficient because they only store non-zero values, while dense vectors allocate memory for every value. The latter is often the preferred choice in deep learning models, as they capture more complex relationships between words in documents since they assign a non-zero value to every word in the vocabulary. The value is assigned based on the frequency and the context in the document. The other advantage of sparse vectors is because they have a fixed size and shape, the values are stored in contiguous memory, making it easier for mathematical operations such as matrix multiplication.
+Recommendation Systems: Dense vectors are used to capture user preferences and item characteristics, enabling personalized recommendations.
+
+Sparse Vectors
+Sparse Vectors are vectors in which most of the elements are zero. They are useful for representing data where only a few features are relevant or non-zero, such as in high-dimensional datasets.
+
+Examples:
+Bag-of-Words (BoW): In text processing, a BoW model represents a document by a sparse vector, where each dimension corresponds to a word in the vocabulary. If a word is present in the document, its corresponding element in the vector is non-zero.
+
+One-Hot Encoding: In categorical data, one-hot encoding creates sparse vectors where only one element is non-zero, representing the category.
+
+Use Cases:
+Text Analysis: Sparse vectors are used in document classification and information retrieval. For example, a BoW representation can help in text categorization tasks.
+
+Feature Selection: Sparse vectors help in representing high-dimensional data with only a few relevant features, reducing computational complexity in machine learning models.
+
+Recommender Systems: Sparse vectors can represent user-item interactions where only a few interactions are non-zero, such as user ratings in a large catalog.
+
+Key Differences
+Density: Dense vectors have mostly non-zero elements, while sparse vectors have mostly zero elements.
+
+Storage Efficiency: Sparse vectors are more storage-efficient for high-dimensional data with few non-zero elements.
+
+Computation: Dense vectors allow for more efficient computations in deep learning, whereas sparse vectors are more efficient in memory usage for large datasets.
+
+Use Cases
+Dense Vectors: Used in scenarios requiring rich and detailed feature representations, such as NLP and image recognition tasks.
+
+Sparse Vectors: Used in scenarios with high-dimensional data and few relevant features, such as text classification with BoW and user-item interaction matrices in recommender systems.
+
 
 ### Setting up a *mapping* with *dense-vector* type field
 
