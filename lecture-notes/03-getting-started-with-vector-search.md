@@ -115,6 +115,7 @@ Cosine similarity, derived from the dot product, normalizes the magnitudes of ve
 The two important points which we need to understand are:
 + The direction which is defined by the angle between vectors
 + The magnitude
+
 ##### Directions and Magnitude
 In the context of text data, vectors are typically created using word embeddings or document embeddings. These are dense vector representations that capture the semantic meaning of words or documents within a continuous vector space.
 
@@ -127,112 +128,87 @@ The magnitude of a vector represents the weight of the text in the vector space.
 When comparing texts in high-dimensional space, the direction is often more important than their magnitudes if the goal is to capture semantic similarity. This is because the angle directly represents the similarity between words.
 
 
-## ***vector*** Data type and ***vector search query*** API
-### ***sparce vector*** and ***dense vectors***
 
-Dense Vectors
+## ***sparce vector*** and ***dense vectors***
+
+### Dense Vectors
 Dense Vectors are vectors in which most of the elements are non-zero. They provide a compact representation of data and are often used in deep learning and other machine learning algorithms.
 
-Examples:
-Word Embeddings: Techniques like Word2Vec, GloVe, and FastText generate dense vectors to represent words. For example, the word "apple" might be represented by a dense vector [0.52, 0.12, -0.75, 0.33, ...].
+#### Examples:
+**Word Embeddings**: Techniques like Word2Vec, GloVe, and FastText generate dense vectors to represent words. For example, the word "apple" might be represented by a dense vector [0.52, 0.12, -0.75, 0.33, ...].
 
-Image Embeddings: Convolutional Neural Networks (CNNs) produce dense vectors to represent features of images. Each dense vector contains values that encapsulate the visual features of the image.
+**Image Embeddings**: Convolutional Neural Networks (CNNs) produce dense vectors to represent features of images. Each dense vector contains values that encapsulate the visual features of the image.
 
-Use Cases:
-Natural Language Processing (NLP): Dense vectors are used to capture semantic relationships between words, sentences, or documents. This includes tasks like text classification, sentiment analysis, and machine translation.
+#### Use Cases:
+**Natural Language Processing (NLP)**: Dense vectors are used to capture semantic relationships between words, sentences, or documents. This includes tasks like text classification, sentiment analysis, and machine translation.
 
-Image Recognition: In image classification and object detection, dense vectors are used to represent the features of images, enabling the model to recognize and classify objects within the image.
+**Image Recognition**: In image classification and object detection, dense vectors are used to represent the features of images, enabling the model to recognize and classify objects within the image.
 
-Recommendation Systems: Dense vectors are used to capture user preferences and item characteristics, enabling personalized recommendations.
+**Recommendation Systems**: Dense vectors are used to capture user preferences and item characteristics, enabling personalized recommendations.
 
-Sparse Vectors
+### Sparse Vectors
 Sparse Vectors are vectors in which most of the elements are zero. They are useful for representing data where only a few features are relevant or non-zero, such as in high-dimensional datasets.
 
-Examples:
-Bag-of-Words (BoW): In text processing, a BoW model represents a document by a sparse vector, where each dimension corresponds to a word in the vocabulary. If a word is present in the document, its corresponding element in the vector is non-zero.
+#### Examples:
+**Bag-of-Words (BoW)**: In text processing, a BoW model represents a document by a sparse vector, where each dimension corresponds to a word in the vocabulary. If a word is present in the document, its corresponding element in the vector is non-zero.
 
-One-Hot Encoding: In categorical data, one-hot encoding creates sparse vectors where only one element is non-zero, representing the category.
+**One-Hot Encoding**: In categorical data, one-hot encoding creates sparse vectors where only one element is non-zero, representing the category.
 
-Use Cases:
-Text Analysis: Sparse vectors are used in document classification and information retrieval. For example, a BoW representation can help in text categorization tasks.
+#### Use Cases:
+**Text Analysis**: Sparse vectors are used in document classification and information retrieval. For example, a BoW representation can help in text categorization tasks.
 
-Feature Selection: Sparse vectors help in representing high-dimensional data with only a few relevant features, reducing computational complexity in machine learning models.
+**Feature Selection**: Sparse vectors help in representing high-dimensional data with only a few relevant features, reducing computational complexity in machine learning models.
 
-Recommender Systems: Sparse vectors can represent user-item interactions where only a few interactions are non-zero, such as user ratings in a large catalog.
+**Recommender Systems**: Sparse vectors can represent user-item interactions where only a few interactions are non-zero, such as user ratings in a large catalog.
 
-Key Differences
-Density: Dense vectors have mostly non-zero elements, while sparse vectors have mostly zero elements.
+### Key Differences
+**Density**: Dense vectors have mostly non-zero elements, while sparse vectors have mostly zero elements.
 
-Storage Efficiency: Sparse vectors are more storage-efficient for high-dimensional data with few non-zero elements.
+**Storage Efficiency**: Sparse vectors are more storage-efficient for high-dimensional data with few non-zero elements.
 
-Computation: Dense vectors allow for more efficient computations in deep learning, whereas sparse vectors are more efficient in memory usage for large datasets.
+**Computation**: Dense vectors allow for more efficient computations in deep learning, whereas sparse vectors are more efficient in memory usage for large datasets.
 
-Use Cases
-Dense Vectors: Used in scenarios requiring rich and detailed feature representations, such as NLP and image recognition tasks.
+#### Use Cases
+**Dense Vectors**: Used in scenarios requiring rich and detailed feature representations, such as NLP and image recognition tasks.
 
-Sparse Vectors: Used in scenarios with high-dimensional data and few relevant features, such as text classification with BoW and user-item interaction matrices in recommender systems.
+**Sparse Vectors**: Used in scenarios with high-dimensional data and few relevant features, such as text classification with BoW and user-item interaction matrices in recommender systems.
+
+## Vector Searching
+### Brute Force Methods
+These algorithms compare the query vector with every vector in the dataset to find the closest match. They are straightforward but computationally expensive, especially for large datasets.
+
+#### Algorithms:
+
++ Linear Search: Compares the query vector with each vector in the dataset one by one.
++ Exhaustive Search: Similar to linear search but used in more complex scenarios, such as searching through permutations or combinations.
++ Brute Force k-NN: Finds the k nearest neighbors by comparing the query vector with every vector in the dataset.
+
+#### Use Cases:
+
++ Small Datasets: When the dataset is small enough to handle exhaustive comparisons.
++ Exact Matches: When it's crucial to find the exact nearest neighbor without approximation.
+
+### Approximate Methods
+These algorithms aim to find a close match quickly by using heuristics or probabilistic approaches, trading off some accuracy for speed and efficiency.
+
+#### Algorithms:
+
++ Locality-Sensitive Hashing (LSH): Maps similar vectors to the same buckets with high probability.
++ k-Nearest Neighbors (k-NN): Finds the k closest vectors to the query vector.
++ Hierarchical Navigable Small World (HNSW): Builds a hierarchical graph structure to speed up nearest neighbor searches.
++ Inverted File System (IVF): Uses an inverted index to quickly retrieve candidate vectors.
+
+#### Use Cases:
+
++ Large Datasets: When dealing with large datasets where brute force methods are impractical.
++ Real-Time Applications: When quick response times are needed, such as in recommendation systems or real-time image search.
++ Approximate Matches: When an approximate nearest neighbor is acceptable and exact matches are not necessary.
+
+### Comparing Vectors under Brute force methods and Approximate Methods
+In both cases, these measures are fundamental to determining which vectors are most similar to the query vector. Here's a brief summary of each measure:
+
++ Dot Product: Measures the cosine of the angle between two vectors.
++ Cosine Similarity: Normalizes the dot product to a value between -1 and 1, indicating directional similarity.
++ Euclidean Distance: Computes the straight-line distance between two vectors in the vector space.
 
 
-### Setting up a *mapping* with *dense-vector* type field
-
-```json
-{
-	"mappings": {
-		"properties": {
-			"embedding": {
-				"type": "dense_vector",
-				"dims": 768,
-			}
-		}
-	}
-}
-```
-
-let's see an example using *elasticsearch* with *python* 
-
-### Brute force kNN Search
-The *vector field* is not *indexed* by default. This means you cannot use it with the *kNN endpoint*. But we can use *vectors* in the *script score function*, with a couple of *similarity functions* to perform *brute-force or exact kNN search*. 
-
-The *script scoring query* is useful when we want to avoid applying the scoring function on all documents which gets searched, and only apply it on the filtered set of documents. Downside of that is that the more filtered the document, the more expensive the script score can be. 
-
-The out of the box *similarity functions*. 
-+ `CosineSimilarity`: Calculates the *cosine* similarity
-+ `dotProduct`: Calculates the dot product
-+ `l1norm`: Calculates the L1 distance
-+ `l2norm`: Calculates the L2 distance
-+ doc[field name].vectorValue: Returns the vectors value as an array of floats   
-+ doc[field name>].magnitude: Returns a vectors' magnitude
-
-As a rule of thumb, if the number of documents after filtering is under 10,000 documents, then not indexing and using one of the similarity functions should give good performance.
-
-The last two options refer to situations where you want to access vectors directly. While it gives an important level of control to users, the performance of the code will depend on how narrowed down the document set is and the quality of the script on multidimensional vectors.
-
-### kNN Search
-
-#### Change needed to the *mapping*
-
-```json
-{
-	"mappings": {
-		"properties": {
-			"embedding": {
-				"type": "dense_vector",
-				"dims": 768,
-				"index": true,
-				"similarity": "dot_product",
-			}
-		}
-	}
-}
-```
-
-The three options for similarity are `l2_norm`, `dot_product`, and `cosine`. We recommend using `dot_product` for vector search in production whenever possible. Using the dot product eliminates the need to calculate vector magnitudes for each similarity computation, as the vectors are pre-normalized to have a magnitude of 1. This can improve search and indexing speed by approximately 2-3 times.
-
-The difference with the brute-force kNN search based on the script scoring query is that, in this case, the HNSW graph is built and stored in memory. Specifically, it is stored at the segment level, and this is why:
-+ Force merging is recommended at the index level to merge all segments in an index into a single segment. This not only optimizes search performance but also prevents HNSW from being rebuilt at any segment. To merge all segments, you can use the following API:
-	+ `POST /my-index/_forcemerge?max_num_segments=1`
-+ Updating a document is not recommended at scale. Because that would rebuild the HNSW again
-
-The kNN search API helps find the k approximate nearest neighbors to a query vector. This query is a vector of numbers representing the text search query. The k nearest neighbors are the documents with vectors most similar to the query vector.
-
-In kNN search, the API initially identifies a specified number of approximate nearest neighbor candidates on each shard, referred to as `num_candidates`. It then calculates the similarity between these candidates and the query vector, selecting the k most similar results from each shard. Finally, the results from all shards are merged to determine the top k nearest neighbors in the entire dataset.

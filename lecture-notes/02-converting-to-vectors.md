@@ -90,6 +90,34 @@ Next, you need to break down the data into chunks. Depending on the type of data
 Once you preprocess the data and break it into suitable chunks, the next step is to convert each chunk into a vector representation, a process known as embedding. 
 
 ## Text to Vectors
+Let's now see how we can convert a *text* string into a vector. 
+
+```python
+from transformers import AutoTokenizer, AutoModel
+import torch
+
+# Load pre-trained model and tokenizer
+model_name = "bert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModel.from_pretrained(model_name)
+
+# Define the text string
+text = "Hugging Face provides state-of-the-art NLP models."
+
+# Tokenize the text and convert to input IDs and attention mask
+inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True)
+
+# Get the embeddings from the model
+with torch.no_grad():
+    outputs = model(**inputs)
+    last_hidden_states = outputs.last_hidden_state
+
+# Use the embeddings of the [CLS] token as the vector representation of the text
+text_vector = last_hidden_states[:, 0, :].squeeze()
+
+print(f"Text: {text}")
+print(f"Vector: {text_vector}")
+```
 
 The line `inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True)` performs several important tasks in the process of converting your text into a format that the model can understand and work with. Let's break it down:
 
@@ -115,7 +143,7 @@ Tensors are a data structure used in deep learning to store data and perform ope
 ### What is the benefit of *Tokenization* before vectorization
 Tokenization plays a crucial role in vectorizing text. It's like breaking down a large block of text into smaller pieces, often referred to as tokens. Here’s a snapshot of the benefits:
 
-+ Simplifies Complex Data:
++ **Simplifies Complex Data**:
 
 Original Text: "Tokenization is the process of converting text into tokens."
 
@@ -123,7 +151,7 @@ Tokens: `['Tokenization', 'is', 'the', 'process', 'of', 'converting', 'text', 'i
 
 By breaking down the sentence into individual tokens, each word can be analyzed separately.
 
-+ Maintains Context:
++ **Maintains Context**:
 
 Original Text: "The quick brown fox jumps over the lazy dog."
 
@@ -131,7 +159,7 @@ Tokens: `['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog']
 
 Each token retains its position and meaning in the sentence, preserving the context for further processing.
 
-+ Reduces Noise:
++ **Reduces Noise**:
 
 Original Text: "Hello!!! How are you???"
 
@@ -139,7 +167,7 @@ Tokens: `['Hello', 'How', 'are', 'you']`
 
 Tokenization removes unnecessary punctuation, reducing noise in the text.
 
-+ Enables Numerical Representation:
++ **Enables Numerical Representation**:
 
 Tokens: `['Tokenization', 'is', 'the', 'process', 'of', 'converting', 'text', 'into', 'tokens']`
 
@@ -147,7 +175,7 @@ Vector Representation: `[1, 0, 0, 1, 0, 1, 0, 1] (For example, using one-hot enc
 
 Each token is converted into a numerical vector that can be used in machine learning models.
 
-+ Handles Different Languages and Formats:
++ **Handles Different Languages and Formats**:
     + English Text: "Tokenization is essential."
     + French Text: "La tokenisation est essentielle."
     + Tokens (English): ['Tokenization', 'is', 'essential']
@@ -156,81 +184,226 @@ Each token is converted into a numerical vector that can be used in machine lear
 Tokenization can handle multiple languages, converting text into tokens for each language.
 By applying tokenization, you can transform text into manageable pieces that retain meaning and context while making it easier for machines to process and analyze.
 
-## Image to Vectors
+### Steps to Generate a Text Embedding
+**Tokenization**: The first step is to break the text into smaller units called tokens. Tokens can be words, subwords, or even characters. For example, the sentence "I love programming" can be tokenized into ["I", "love", "programming"].
 
-Model:
+**Mapping Tokens to Indices**: Each token is then mapped to a unique integer index using a predefined vocabulary. Suppose our vocabulary is:
+
+After tokenization, each token (word, subword, or character) is mapped to a unique integer index using a predefined vocabulary. This vocabulary is essentially a dictionary where each token in the corpus has a corresponding index.
+
+Example:
+Let's say we have a sentence: "I love programming."
+
+Vocabulary:
+
+{
+  "I": 1,
+  "love": 2,
+  "programming": 3,
+  "<UNK>": 0  // For unknown tokens
+}
+Here, each word is assigned a unique integer index:
+
+"I" -> 1
+
+"love" -> 2
+
+"programming" -> 3
+
+If the sentence contained a word not in the vocabulary, it would be mapped to the special token <UNK> (unknown).
+
+Token to Index Mapping:
+
+Sentence: ["I", "love", "programming"]
+
+Indices: [1, 2, 3]
+
+This mapping process converts the text into a format that can be processed by the embedding layer.
+
+{ "I": 1, "love": 2, "programming": 3 }
+The tokens ["I", "love", "programming"] will be converted to [1, 2, 3].
+
+**Embedding Layer**: The indices are fed into an embedding layer, which is a part of a neural network. This layer transforms the indices into dense vectors. The embedding layer contains a weight matrix that is learned during training. Each row of the matrix corresponds to a vector for a specific token in the vocabulary.
+
+The embedding layer is a crucial component of the neural network. It takes the integer indices from the previous step and transforms them into dense vectors of fixed size. This layer contains a weight matrix where each row corresponds to an embedding vector for a specific token in the vocabulary.
+
+Example:
+Let's assume our embedding dimension is 3, meaning each token will be represented by a vector of length 3.
+
+Embedding Matrix (initialized randomly or pretrained):
+
+[
+  [0.0, 0.0, 0.0],  // Embedding for <UNK>
+  [0.1, 0.3, 0.5],  // Embedding for "I"
+  [0.4, 0.6, 0.8],  // Embedding for "love"
+  [0.2, 0.7, 0.9]   // Embedding for "programming"
+]
+
+In this matrix:
+
+Row 0 corresponds to the embedding for <UNK>.
+
+Row 1 corresponds to the embedding for "I" ([0.1, 0.3, 0.5]).
+
+Row 2 corresponds to the embedding for "love" ([0.4, 0.6, 0.8]).
+
+Row 3 corresponds to the embedding for "programming" ([0.2, 0.7, 0.9]).
+
+Embedding Lookup: Using the indices [1, 2, 3] from step 2, we look up the corresponding vectors in the embedding matrix:
+
+"I" -> [0.1, 0.3, 0.5]
+
+"love" -> [0.4, 0.6, 0.8]
+
+"programming" -> [0.2, 0.7, 0.9]
+
+So, for the sentence "I love programming," we get the following embeddings:
+
+[
+  [0.1, 0.3, 0.5],
+  [0.4, 0.6, 0.8],
+  [0.2, 0.7, 0.9]
+]
+
+**Generating the Embedding**: The tokens' indices are used to look up their corresponding vectors in the embedding matrix. For the sentence "I love programming", the embeddings are:
+
+[
+  [0.1, 0.3, 0.5],
+  [0.4, 0.6, 0.8],
+  [0.2, 0.7, 0.9]
+]
+
+**Combining Embeddings**: Depending on the task, you might combine these vectors into a single representation. Common methods include *averaging, summing*, or using more complex neural network architectures like *recurrent or transformer networks*. For simplicity, for this usecase let's average the vectors:
+
+Average Vector = [(0.1 + 0.4 + 0.2)/3, (0.3 + 0.6 + 0.7)/3, (0.5 + 0.8 + 0.9)/3]
+               = [0.233, 0.533, 0.733]
+
+## Image to Vectors
+Now let's see how we can convert an *image* into an *embedding vector*. 
+
+```python
+from transformers import CLIPProcessor, CLIPModel
+from PIL import Image
+import torch
+
+# Load the pre-trained model and processor
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
+# Load the image
+image_path = "/sample-data/small-boy-with-robot.png"
+image = Image.open(image_path)
+
+# Preprocess the image
+inputs = processor(images=image, return_tensors="pt")
+
+# Get the image embeddings
+with torch.no_grad():
+    image_features = model.get_image_features(**inputs)
+
+# Convert the image features to a vector
+image_vector = image_features.squeeze().numpy()
+
+print("Image vector:\n", image_vector)
+
+```
+
+Let's understand the components used to get the *image* converted into an *embedding vector*. 
+
+**Model**:
 The model in the script is the CLIPModel from Hugging Face. It serves several purposes:
 
-Pre-trained Embeddings: The model is pre-trained on a large dataset, which enables it to generate meaningful embeddings (vectors) for images and text.
+**Pre-trained Embeddings**: The model is pre-trained on a large dataset, which enables it to generate meaningful embeddings (vectors) for images and text.
 
-Feature Extraction: It processes the input image and extracts high-dimensional features that represent the content of the image. These features capture the essential visual information needed for various machine learning tasks.
+**Feature Extraction**: It processes the input image and extracts high-dimensional features that represent the content of the image. These features capture the essential visual information needed for various machine learning tasks.
 
-Transfer Learning: Leveraging a pre-trained model like CLIP allows you to benefit from transfer learning, where the knowledge gained from training on a large dataset is applied to your specific task.
+**Transfer Learning**: Leveraging a pre-trained model like CLIP allows you to benefit from transfer learning, where the knowledge gained from training on a large dataset is applied to your specific task.
 
-Processor:
+**Processor**:
 The processor in the script is the CLIPProcessor from Hugging Face. It handles the following tasks:
 
-Preprocessing: The processor prepares the input image for the model. This includes resizing, normalizing, and converting the image into the format expected by the model.
+**Preprocessing**: The processor prepares the input image for the model. This includes *resizing, normalizing, and converting* the image into the format expected by the model.
 
-Tokenization: For text inputs, the processor would also handle tokenization, converting text into tokens that the model can understand. In this case, it's used solely for images.
+**Tokenization**: For text inputs, the processor would also handle tokenization, converting text into tokens that the model can understand. In this case, it's used solely for images.
 
-Returning Tensors: The processor converts the preprocessed image into tensors (multi-dimensional arrays) that can be fed into the model for further processing.
+**Returning Tensors**: The processor converts the preprocessed image into tensors (multi-dimensional arrays) that can be fed into the model for further processing.
 
-Workflow:
-Processor Preprocesses the Image: The image is loaded and preprocessed by the processor, which ensures it matches the input requirements of the model.
+### Workflow:
+**Processor Preprocesses the Image**: The image is loaded and preprocessed by the processor, which ensures it matches the input requirements of the model.
 
-Model Extracts Features: The preprocessed image is then passed to the model, which extracts the image features and converts them into a vector.
+**Model Extracts Features**: The preprocessed image is then passed to the model, which extracts the image features and converts them into a vector.
 
 In summary, the processor prepares the input data, ensuring it's in the correct format for the model, while the model performs the heavy lifting of extracting meaningful features from the image.
 
 
 ## Audio to Vectors
+Similar to above now let's see how we can convert an *audio* file into an *embedding vector*. 
 
-Model:
+```python
+import librosa
+import torch
+from transformers import Wav2Vec2Processor, Wav2Vec2Model
+
+# Load the pre-trained Wav2Vec2 model and processor
+processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base-960h")
+model = Wav2Vec2Model.from_pretrained("facebook/wav2vec2-base-960h")
+
+# Load the audio file
+audio_path = "/sample-data/speech.mp3"
+audio, sample_rate = librosa.load(audio_path, sr=16000)
+
+# Process the audio
+inputs = processor(audio, sampling_rate=sample_rate, return_tensors="pt", padding=True)
+
+# Extract audio features using the model
+with torch.no_grad():
+    audio_features = model(**inputs).last_hidden_state
+
+# Convert the audio features to a vector
+audio_vector = audio_features.mean(dim=1).squeeze().numpy()
+
+print("Audio vector:", audio_vector)
+
+```
+
+**Model**:
 The model used in the script is the Wav2Vec2Model from Hugging Face. Its roles include:
 
-Pre-trained Embeddings: The model is pre-trained on a large dataset of audio recordings. This enables it to generate meaningful embeddings (vectors) for audio data.
+**Pre-trained Embeddings**: The model is pre-trained on a large dataset of audio recordings. This enables it to generate meaningful embeddings (vectors) for audio data.
 
-Feature Extraction: It processes the input audio and extracts high-dimensional features that represent the content of the audio. These features capture the essential information needed for various machine learning tasks, such as speech recognition or audio classification.
+**Feature Extraction**: It processes the input audio and extracts high-dimensional features that represent the content of the audio. These features capture the essential information needed for various machine learning tasks, such as speech recognition or audio classification.
 
-Transfer Learning: Leveraging a pre-trained model like Wav2Vec2 allows you to benefit from transfer learning, where the knowledge gained from training on a large dataset is applied to your specific task.
+**Transfer Learning**: Leveraging a pre-trained model like Wav2Vec2 allows you to benefit from transfer learning, where the knowledge gained from training on a large dataset is applied to your specific task.
 
-Processor:
+**Processor**:
 The processor used in the script is the Wav2Vec2Processor from Hugging Face. Its roles include:
 
-Preprocessing: The processor prepares the input audio for the model. This includes tasks such as resampling, normalizing, and padding the audio data to match the input requirements of the model.
+**Preprocessing**: The processor prepares the input audio for the model. This includes tasks such as resampling, normalizing, and padding the audio data to match the input requirements of the model.
 
-Tokenization: For text inputs, the processor handles tokenization, converting text into tokens that the model can understand. In this case, it's used solely for audio data.
+**Tokenization**: For text inputs, the processor handles tokenization, converting text into tokens that the model can understand. In this case, it's used solely for audio data.
 
-Returning Tensors: The processor converts the preprocessed audio data into tensors (multi-dimensional arrays) that can be fed into the model for further processing.
+**Returning Tensors**: The processor converts the preprocessed audio data into tensors (multi-dimensional arrays) that can be fed into the model for further processing.
 
-Workflow:
-Processor Preprocesses the Audio: The audio file is loaded and preprocessed by the processor, which ensures it matches the input requirements of the model.
+### Workflow:
+**Processor Preprocesses the Audio**: The audio file is loaded and preprocessed by the processor, which ensures it matches the input requirements of the model.
 
-Model Extracts Features: The preprocessed audio is then passed to the model, which extracts the audio features and converts them into a vector.
+**Model Extracts Features**: The preprocessed audio is then passed to the model, which extracts the audio features and converts them into a vector.
 
 In summary, the processor prepares the input data, ensuring it's in the correct format for the model, while the model performs the heavy lifting of extracting meaningful features from the audio.
 
-Resampling:
+**Resampling**:
 Resampling refers to changing the sample rate of an audio signal. The sample rate is the number of samples (data points) captured per second. Common sample rates include 44.1 kHz (used for CDs) and 48 kHz (used for professional audio).
 
-In the context of the script:
-
+In the context of the script**:
 The pre-trained Wav2Vec2 model expects audio input at a sample rate of 16 kHz (16,000 samples per second).
-
 If your audio file has a different sample rate, resampling adjusts the audio to match the model's expected input. For example, if your audio file is at 44.1 kHz, resampling converts it to 16 kHz.
 
 This ensures that the audio data is compatible with the model and can be processed correctly.
 
-Normalizing:
+**Normalizing**:
 Normalizing adjusts the amplitude (volume) of the audio signal to a standard level. This process ensures that the audio data is consistently scaled, which helps improve the performance of the model.
 
 In the context of the script:
-
-Normalization typically involves scaling the audio waveform so that the amplitude values fall within a specific range (e.g., -1 to 1).
-
-This process ensures that the audio data is neither too quiet nor too loud, which can affect the model's ability to accurately extract features.
-
-Normalization helps to reduce variability in the input data, making it easier for the model to learn and generalize from the audio.
+Normalization typically involves scaling the audio waveform so that the amplitude values fall within a specific range (e.g., -1 to 1). This process ensures that the audio data is neither too quiet nor too loud, which can affect the model's ability to accurately extract features. Normalization helps to reduce variability in the input data, making it easier for the model to learn and generalize from the audio.
 
 By resampling and normalizing the audio, the processor ensures that the audio data is in the correct format and scale for the model, allowing it to extract meaningful features effectively.
