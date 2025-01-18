@@ -91,5 +91,6 @@ if __name__ == "__main__":
     
     print(f'\n\nUsing Euclidean Distance:\n\n')
     similarity_search_euclidean_distance(query_text)
+    
     print(f'\n\nUsing Inner Product:\n\n')
     similarity_search_inner_product(query_text)

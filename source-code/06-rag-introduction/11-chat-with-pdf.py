@@ -1,6 +1,5 @@
 import psycopg
 from ollama import Client
-import streamlit as st
 
 def generate_embeddings(text):
     # Replace 'http://your-host-url:port' with the actual URL of your hosted service
@@ -98,6 +97,56 @@ def similarity_search_inner_product(query_text):
     except Exception as error:
         print(f"Error: {error}")
 
+def similarity_search_cosine_distance(query_text):
+    # Database connection parameters
+    conn_params = {
+        'dbname': 'pdf_rag',           # Database name
+        'user': 'postgres',         # PostgreSQL username
+        'password': 'postgres',     # PostgreSQL password
+        'host': 'vectordb-lab-postgres-db',  # Hostname (container name)
+        'port': '5432'              # Port number
+    }
+
+    try:
+        # Generate embedding for the query text
+        query_embedding = generate_embeddings(query_text)
+
+        # Establishing the connection using psycopg3
+        with psycopg.connect(**conn_params) as conn:
+            with conn.cursor() as cursor:
+                # Performing the similarity search
+                cursor.execute(
+                    """
+                    SELECT source, page_content, page_number
+                    FROM dev.pdf_rag_data
+                    ORDER BY page_content_embeddings <=> %s::vector
+                    LIMIT 3;
+                    """,
+                    (query_embedding,)
+                )
+                results = cursor.fetchall()
+                
+                # Printing the search results
+                #print("Similarity Search Results:")
+                context_detail = ''
+                for result in results:
+                    #print(f"Source: {result[0]} Page Number: {result[2]}\nPage Content:\n{result[1]}")
+                    context_detail += f"""
+                    ####
+                    Source 
+
+                    {result[1]}
+
+                    Source File= {result[0]}
+                    Page Number= {result[2]}
+                    
+                    """
+                
+                #print(f'\n\n\n Source Details: \n{context_detail}')
+                return context_detail
+    except Exception as error:
+        print(f"Error: {error}")
+
 def generate_answer_from_llm(query_text,query_context):
     system_prompt = """
     You are a helpful assistant.
@@ -143,33 +192,23 @@ def generate_answer_from_llm(query_text,query_context):
         messages=messages
     )
 
-    llm_response = response.message.content
-    return llm_response
+    print(response.message.content)
 
 # Call the function to perform similarity search
 if __name__ == "__main__":
     
-    st.title('Ask me')
 
     while True:
-        # Create a Form
-        with st.form(key='ask_me'):
-            query_text = st.text_input('### User')
-            submit_button = st.form_submit_button(label='Send')
-        #st.write('### User:')
+        query_text = input(f'\nUser:\n')
+        if query_text == 'Quit':
+            break
         
-        if submit_button and query_text:
-            if query_text == 'Quit':
-                break
-            
-            query_context = similarity_search_inner_product(query_text)
-            
-            st.write('### LLM:')
-            llm_response = generate_answer_from_llm(query_text=query_text,query_context=query_context)
-            st.write(llm_response)
-    #print(f'\n\nUsing Euclidean Distance:\n\n')
-    #similarity_search_euclidean_distance(query_text)
-    #print(f'\n\nUsing Inner Product:\n\n')
+        query_context = similarity_search_cosine_distance(query_text)
+        
+        print('\nLLM: \n')
+        generate_answer_from_llm(query_text=query_text,query_context=query_context)
+    
+    
     
 
     

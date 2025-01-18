@@ -33,10 +33,11 @@ def knn_semantic_search_by_title(query_title):
     response = es.search(index='mylibrary', body={"query": query})
     hits = response['hits']['hits']
 
-    print("KNN Semantic Search Results:")
+    print(f"\nSearching Book Title:\n{query_title}\n\nKNN Semantic Search Results:\n")
     for hit in hits:
         source = hit['_source']
-        print(f"Title: {source['title']}, Authors: {', '.join(source['authors'])}")
+        score = hit['_score']
+        print(f"Title: {source['title']}\nAuthors: {', '.join(source['authors'])}\nRelevance Score: {score}\n")
 
 if __name__ == "__main__":
     query_title = "cloud"  # Replace with your search query

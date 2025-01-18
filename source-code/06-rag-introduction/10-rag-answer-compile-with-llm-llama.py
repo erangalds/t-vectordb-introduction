@@ -6,8 +6,8 @@ def generate_embeddings(text):
     client = Client(host='http://host.docker.internal:11434')
     response = client.embed(model='nomic-embed-text', input=text)
     vetorized_search_query = response['embeddings'][0]
-    #print(f'Search Query:\n{text}')
-    #print(f'Vectorized Search Query:\n{vetorized_search_query[0:5]}')
+    print(f'Search Query:\n{text}')
+    print(f'Vectorized Search Query:\n{vetorized_search_query[0:5]}')
     return vetorized_search_query
 
 def similarity_search_euclidean_distance(query_text):
@@ -77,7 +77,57 @@ def similarity_search_inner_product(query_text):
                 results = cursor.fetchall()
                 
                 # Printing the search results
-                #print("Similarity Search Results:")
+                print("Similarity Search Results:")
+                context_detail = ''
+                for result in results:
+                    #print(f"Source: {result[0]} Page Number: {result[2]}\nPage Content:\n{result[1]}")
+                    context_detail += f"""
+                    ####
+                    Source 
+
+                    {result[1]}
+
+                    Source File= {result[0]}
+                    Page Number= {result[2]}
+                    
+                    """
+                
+                #print(f'\n\n\n Source Details: \n{context_detail}')
+                return context_detail
+    except Exception as error:
+        print(f"Error: {error}")
+
+def similarity_search_cosine_distance(query_text):
+    # Database connection parameters
+    conn_params = {
+        'dbname': 'pdf_rag',           # Database name
+        'user': 'postgres',         # PostgreSQL username
+        'password': 'postgres',     # PostgreSQL password
+        'host': 'vectordb-lab-postgres-db',  # Hostname (container name)
+        'port': '5432'              # Port number
+    }
+
+    try:
+        # Generate embedding for the query text
+        query_embedding = generate_embeddings(query_text)
+
+        # Establishing the connection using psycopg3
+        with psycopg.connect(**conn_params) as conn:
+            with conn.cursor() as cursor:
+                # Performing the similarity search
+                cursor.execute(
+                    """
+                    SELECT source, page_content, page_number
+                    FROM dev.pdf_rag_data
+                    ORDER BY page_content_embeddings <=> %s::vector
+                    LIMIT 3;
+                    """,
+                    (query_embedding,)
+                )
+                results = cursor.fetchall()
+                
+                # Printing the search results
+                print("Similarity Search Results:")
                 context_detail = ''
                 for result in results:
                     #print(f"Source: {result[0]} Page Number: {result[2]}\nPage Content:\n{result[1]}")
@@ -138,7 +188,7 @@ def generate_answer_from_llm(query_text,query_context):
     client = Client(host='http://host.docker.internal:11434')
 
     response = client.chat(
-        'llama3.2',
+        'llama3.2:1b',
         messages=messages
     )
 
@@ -146,21 +196,12 @@ def generate_answer_from_llm(query_text,query_context):
 
 # Call the function to perform similarity search
 if __name__ == "__main__":
+    # Question
+    query_text = "solar energy plan in the next few years"
     
+    # Getting the Information to setup the question answer context
+    query_context = similarity_search_cosine_distance(query_text)
 
-    while True:
-        query_text = input(f'\nUser:\n')
-        if query_text == 'Quit':
-            break
-        
-        query_context = similarity_search_inner_product(query_text)
-        
-        print('\nLLM: \n')
-        generate_answer_from_llm(query_text=query_text,query_context=query_context)
-    
-    #print(f'\n\nUsing Euclidean Distance:\n\n')
-    #similarity_search_euclidean_distance(query_text)
-    #print(f'\n\nUsing Inner Product:\n\n')
-    
-
-    
+    print('\n\nFinal Answer: \n\n')
+    # Generate the final answer
+    generate_answer_from_llm(query_text=query_text,query_context=query_context)
