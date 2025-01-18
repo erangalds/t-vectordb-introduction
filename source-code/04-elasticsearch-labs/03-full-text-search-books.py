@@ -20,11 +20,12 @@ def search_books_by_title(book_title):
     response = es.search(index='mylibrary', body=query)
     hits = response['hits']['hits']
 
-    print("Search Results:")
+    print(f"\nSearching Title Query:\n{book_title}\n\nSearch Results:")
     for hit in hits:
         source = hit['_source']
-        print(f"Title: {source['title']}, Authors: {', '.join(source['authors'])}")
+        score = hit['_score']
+        print(f"Title: {source['title']}\nAuthors: {', '.join(source['authors'])}\nRelevance Score: {score}\n")
 
 if __name__ == "__main__":
-    book_title = "azure"  # Replace with the actual book title you want to search
+    book_title = "cloud"  # Replace with the actual book title you want to search
     search_books_by_title(book_title)

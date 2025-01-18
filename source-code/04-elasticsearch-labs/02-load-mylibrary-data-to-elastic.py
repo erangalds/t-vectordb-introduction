@@ -58,7 +58,7 @@ def bulk_insert_books(df):
         for i, row in df.iterrows()
     ]
 
-    print(f'Showing the first Record:\n{actions[0]}\n\n')
+    #print(f'Showing the first Record:\n{actions[0]}\n\n')
     # Perform bulk insert and capture errors 
     success, failed = helpers.bulk(es, actions, raise_on_error=False, stats_only=False) 
     print(f"Successfully indexed {success} documents.") 
@@ -68,7 +68,11 @@ def bulk_insert_books(df):
             print(f'Failure: {failure}')
 
 if __name__ == "__main__":
+    # Create or Recreate the index
     create_or_recreate_index()
+    # Read the Excel File
     df = read_excel_file('/sample-data/mylibrary/mylibrary.xlsx', 'Sheet1')
+    # Inserting Data into the Elasticsearch Index
     bulk_insert_books(df)
-    print("Data inserted successfully.")
+
+    

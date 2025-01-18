@@ -10,7 +10,9 @@ text = "The quick brown fox jumps over the lazy dog."
 response = client.embed(
     model='nomic-embed-text', input=text
 )
-
+embedding_vector = response['embeddings'][0]
 # Print the embeddings
-print(response['embeddings'])
+print(f'Text Needs to be converted to embeddings:\n{text}\n\n')
+print(f'\nNumber of dimensions in the embedding vector: {len(embedding_vector)}\n')
+print(embedding_vector)
 

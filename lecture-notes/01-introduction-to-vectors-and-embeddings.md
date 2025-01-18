@@ -1,5 +1,4 @@
 # Introduction to Vectors and Embeddings
-https://www.timescale.com/blog/a-beginners-guide-to-vector-embeddings
 
 ## Roles of *Supervised and Unsupervised Learning* in *Vector Search*
 In *Supervised Learning*, a *model learns* from *labeled data* to determine a *connection or mapping* between the *input features and output labels*. While the *model development phase also called training phase*, the *model* adjusts its *parameters* in such a way which will *minimize the error* between its *prediction* and the *true labels*. This *supervised learning ML* technique is frequently used in ***Natural Language Processing (NLP)***. The challenge with this *ML technique* is getting the *labeled data set* prepared for the *model development*. 

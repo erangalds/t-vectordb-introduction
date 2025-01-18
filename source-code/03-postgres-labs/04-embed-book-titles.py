@@ -55,17 +55,22 @@ def insert_vectorized_title(titles):
         # Establishing the connection using psycopg3
         with psycopg.connect(**conn_params) as conn:
             with conn.cursor() as cursor:
+                # Iterating over the book titles
                 for title in titles:
                     # Update the dev.books table with the vectorized title 
                     print(f'\n\nVectorizing Title:\n{title[0]}\n')
+                    # Generating the vector embedding for the title
                     vectorized_title = get_embedding(client, title[0])
                     print(f'Generated Embedding:\n{vectorized_title[0:5]}')
+                    # Inserting the vector embedding back into the database table
                     cursor.execute( "UPDATE dev.books SET vectorized_title = %s WHERE title = %s", (vectorized_title, title[0]) )
             conn.commit()
     except Exception as error:
         print(f'Error: {error}')
 
 if __name__ == "__main__":
+    # Retrieve all the books titles from the database
     retrieved_book_titles = fetch_book_titles()
+    # Generate the corresponding vector embeddings for the books titles and load them back into the database
     insert_vectorized_title(retrieved_book_titles)
 

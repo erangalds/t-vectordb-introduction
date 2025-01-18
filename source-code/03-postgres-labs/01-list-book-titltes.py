@@ -14,6 +14,8 @@ def fetch_book_titles():
         # Establishing the connection using psycopg3
         with psycopg.connect(**conn_params) as conn:
             with conn.cursor() as cursor:
+                # Logged into database
+                print(f'\nLogged into the Postgres Database\n\n')
                 # Executing SQL query to fetch all records from dev.books table
                 cursor.execute("SELECT title FROM dev.books;")
                 

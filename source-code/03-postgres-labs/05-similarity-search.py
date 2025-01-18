@@ -37,10 +37,15 @@ def similarity_search_euclidean_distance(query_text):
                     """,
                     (query_embedding,)
                 )
+                # NOTE: PGVector Search syntax
+                # <-> L2 Distance - Euclidean Distance
+                # <+> L1 Distance - Manhaten Distance
+                # <#> Inner Product - Dot Product
+                # <=> Cosine Distance
                 results = cursor.fetchall()
                 
                 # Printing the search results
-                print("Similarity Search Results:")
+                print("Euclidian Distance Similarity Search Results:")
                 for result in results:
                     print(f"Title: {result[0]}")
 
@@ -74,10 +79,58 @@ def similarity_search_inner_product(query_text):
                     """,
                     (query_embedding,)
                 )
+                # NOTE: PGVector Search syntax
+                # <-> L2 Distance - Euclidean Distance
+                # <+> L1 Distance - Manhaten Distance
+                # <#> Inner Product - Dot Product
+                # <=> Cosine Distance
                 results = cursor.fetchall()
                 
                 # Printing the search results
-                print("Similarity Search Results:")
+                print("Inner Product (Dot Product) Similarity Search Results:")
+                for result in results:
+                    print(f"Title: {result[0]}")
+
+    except Exception as error:
+        print(f"Error: {error}")
+
+
+def similarity_search_cosine_distance(query_text):
+    # Database connection parameters
+    conn_params = {
+        'dbname': 'mylibrary',           # Database name
+        'user': 'postgres',         # PostgreSQL username
+        'password': 'postgres',     # PostgreSQL password
+        'host': 'vectordb-lab-postgres-db',  # Hostname (container name)
+        'port': '5432'              # Port number
+    }
+
+    try:
+        # Generate embedding for the query text
+        query_embedding = generate_embeddings(query_text)
+
+        # Establishing the connection using psycopg3
+        with psycopg.connect(**conn_params) as conn:
+            with conn.cursor() as cursor:
+                # Performing the similarity search
+                cursor.execute(
+                    """
+                    SELECT title, vectorized_title
+                    FROM dev.books
+                    ORDER BY vectorized_title <=> %s::vector
+                    LIMIT 5;
+                    """,
+                    (query_embedding,)
+                )
+                # NOTE: PGVector Search syntax
+                # <-> L2 Distance - Euclidean Distance
+                # <+> L1 Distance - Manhaten Distance
+                # <#> Inner Product - Dot Product
+                # <=> Cosine Distance
+                results = cursor.fetchall()
+                
+                # Printing the search results
+                print("Cosine Distance Similarity Search Results:")
                 for result in results:
                     print(f"Title: {result[0]}")
 
@@ -89,7 +142,11 @@ def similarity_search_inner_product(query_text):
 if __name__ == "__main__":
     query_text = "cloud solutions"
     
-    print(f'\n\nUsing Euclidean Distance:\n\n')
+    print(f'\n\n###################----Using Euclidean Distance:-------------####################\n\n')
     similarity_search_euclidean_distance(query_text)
-    print(f'\n\nUsing Inner Product:\n\n')
+    
+    print(f'\n\n###################----Using Inner Product:------------------####################\n\n')
     similarity_search_inner_product(query_text)
+
+    print(f'\n\n###################----Using Cosine Distance:------------------####################\n\n')
+    similarity_search_cosine_distance(query_text)
