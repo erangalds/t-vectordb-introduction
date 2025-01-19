@@ -55,20 +55,20 @@ The training task plays a crucial role in shaping the learned embeddings. By opt
 
 Let's take an example to understand this better. Imagine you're building a neural network for text classification that determines whether a movie review is positive or negative. Here's how it works:
 
-Initially, each word in the vocabulary is randomly assigned an embedding vector that numerically represents the essence of the word. For instance, the vector for the word "good" might be [0.2, 0.5, -0.1], while the vector for the word "bad" might be [0.4, -0.3, 0.6].
+Initially, each word in the *vocabulary* is randomly assigned an *embedding vector* that numerically represents the essence of the word. For instance, the vector for the word "good" might be [0.2, 0.5, -0.1], while the vector for the word "bad" might be [0.4, -0.3, 0.6].
 
-The network is then trained on a dataset of labeled movie reviews. During this process, it learns to predict the sentiment of the review based on the words used in it. This involves adjusting the weights, including the embedding vectors, to minimize errors in sentiment prediction.
+The *network* is then *trained* on a dataset of *labeled* movie reviews. During this process, it learns to *predict* the *sentiment* of the review based on the words used in it. This involves adjusting the *weights*, including the *embedding vectors*, to minimize *errors* in *sentiment* prediction.
 
-As the network continues to learn from the data, the embedding vectors for words are fine-tuned to better perform sentiment classification. Words that often appear together in similar contexts, like "good" and "excellent," end up with similar embeddings. Conversely, words with opposite meanings, like "terrible" and "great," have embeddings that are farther apart, reflecting their semantic relationships.
+As the network continues to learn from the data, the *embedding vectors* for words are *fine-tuned* to better perform *sentiment classification*. Words that often appear together in similar contexts, like "good" and "excellent", end up with similar *embeddings*. Conversely, words with opposite meanings, like "terrible" and "great," have *embeddings* that are farther apart, reflecting their *semantic relationships*.
 
-How Do Vector Embeddings Work?
-Vector embeddings operate by representing features or objects as points in a multidimensional vector space. The relative positions of these points indicate meaningful relationships between the features or objects, capturing semantic relationships by placing similar items closer together.
+## How Do Vector Embeddings Work?
+*Vector embeddings* operate by representing *features* or *objects* as points in a *multidimensional vector space*. The relative positions of these points indicate meaningful relationships between the *features* or *objects*, capturing *semantic relationships* by placing similar items closer together.
 
-Distances between vectors quantify these relationships. Common distance metrics include Euclidean distance, cosine similarity, and Manhattan distance, which measure how "close" or "far" vectors are from each other in the multidimensional space.
+*Distances* between *vectors* quantify these relationships. Common distance metrics include *Euclidean distance, cosine similarity, and Manhattan distance*, which measure how "close" or "far" vectors are from each other in the multidimensional space.
 
-Euclidean Distance: Measures the straight-line distance between points.
+**Euclidean Distance**: Measures the straight-line distance between points.
 
-Cosine Similarity: Measures the cosine of the angle between two vectors, often used to determine how similar two vectors are, regardless of their magnitudes. A higher cosine similarity value indicates greater similarity.
+**Cosine Similarity**: Measures the *cosine* of the *angle* between two *vectors*, often used to determine how similar two *vectors* are, regardless of their magnitudes. A higher *cosine similarity* value indicates greater similarity.
 
 Imagine a word embedding space where words are represented as vectors in a two-dimensional space. In this space:
 
@@ -78,18 +78,23 @@ The word "dog" might be represented as [1.0, 0.9].
 
 The word "car" might be represented as [0.3, -1.5].
 
-In this example, the Euclidean distance between "cat" and "dog" is shorter than the distance between "cat" and "car," indicating that "cat" is more similar to "dog" than to "car." Similarly, the cosine similarity between "cat" and "dog" is higher than that between "cat" and "car," further highlighting their semantic similarity.
+In this example, the *Euclidean distance* between "cat" and "dog" is shorter than the distance between "cat" and "car," indicating that "cat" is more similar to "dog" than to "car." Similarly, the *cosine similarity* between "cat" and "dog" is higher than that between "cat" and "car," further highlighting their *semantic similarity*.
 
 
-How to Create Vector Embeddings for Your Data
-Creating vector embeddings of your data is also commonly called vectorization. Here’s a general overview of the vectorization process:
+## How to Create Vector Embeddings for Your Data
+Creating vector embeddings of your data is also commonly called vectorization. 
 
-The first step is to collect the raw data that you want to process. This could be text, audio, images, time series data, or any other kind of structured or unstructured data. 
+### High Level Overview of the Vectorization Process:
+
+The first step is to collect the raw data that you want to process. This could be text, audio, images, time series data, or any other kind of structured or unstructured data.
+ 
 Then, you need to preprocess the data to clean it and make it suitable for analysis. Depending on the kind of data you have, this may involve tasks like tokenization (in the case of text data), removing noise, resizing images, normalization, scaling, and other data cleaning operations.
+
 Next, you need to break down the data into chunks. Depending on the type of data you’re dealing with, you might have to split text into sentences or words (if you have text data), divide images into segments or patches (if you have image data), or partition time series into intervals or windows (if you have time series data).  
+
 Once you preprocess the data and break it into suitable chunks, the next step is to convert each chunk into a vector representation, a process known as embedding. 
 
-## Text to Vectors
+## Converting Text to Vectors
 Let's now see how we can convert a *text* string into a vector. 
 
 ```python
@@ -278,7 +283,7 @@ So, for the sentence "I love programming," we get the following embeddings:
 Average Vector = [(0.1 + 0.4 + 0.2)/3, (0.3 + 0.6 + 0.7)/3, (0.5 + 0.8 + 0.9)/3]
                = [0.233, 0.533, 0.733]
 
-## Image to Vectors
+## Converting Image to Vectors
 Now let's see how we can convert an *image* into an *embedding vector*. 
 
 ```python
@@ -336,7 +341,7 @@ The processor in the script is the CLIPProcessor from Hugging Face. It handles t
 In summary, the processor prepares the input data, ensuring it's in the correct format for the model, while the model performs the heavy lifting of extracting meaningful features from the image.
 
 
-## Audio to Vectors
+## Converting Audio to Vectors
 Similar to above now let's see how we can convert an *audio* file into an *embedding vector*. 
 
 ```python
