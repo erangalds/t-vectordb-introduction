@@ -6,8 +6,8 @@ def generate_embeddings(text):
     client = Client(host='http://host.docker.internal:11434')
     response = client.embed(model='nomic-embed-text', input=text)
     vetorized_search_query = response['embeddings'][0]
-    print(f'Search Query:\n{text}')
-    print(f'Vectorized Search Query:\n{vetorized_search_query[0:5]}')
+    #print(f'Search Query:\n{text}')
+    #print(f'Vectorized Search Query:\n{vetorized_search_query[0:5]}')
     return vetorized_search_query
 
 def similarity_search_euclidean_distance(query_text):
@@ -197,8 +197,8 @@ def generate_answer_from_llm(query_text,query_context):
 # Call the function to perform similarity search
 if __name__ == "__main__":
     # Question
-    query_text = "solar energy plan in the next few years"
-    
+    query_text = "Describe solar energy plan in the next few years"
+    print(f'\nUser Query:\n{query_text}\n')    
     # Getting the Information to setup the question answer context
     query_context = similarity_search_cosine_distance(query_text)
 

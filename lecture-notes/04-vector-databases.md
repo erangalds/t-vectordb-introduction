@@ -84,7 +84,7 @@ CREATE INDEX ON items USING hnsw (embedding vector_cosine_ops) WITH (m = 16, ef_
    - **When to Use**: Useful for applications where the dataset is large, and search speed is a priority.
    - **Example Use Case**: Searching large multimedia databases.
 
-We can create HNSW Vector Indexes (Vector Search Optimization Algorithm) as below. 
+We can create IVFFLAT Vector Indexes (Vector Search Optimization Algorithm) as below. 
 
 ```sql
 -- First Create the Vector Extension
